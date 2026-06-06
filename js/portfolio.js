@@ -49,16 +49,47 @@ function revealOnScroll() {
 
 function handleNavToggle() {
   if (!navToggle || !navLinks) return;
+
+  const navContainer = document.querySelector('.nav-container');
+
+  function closeNav() {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  // Move nav-links out of sticky topbar on mobile so position:fixed works correctly.
+  // position:sticky creates a containing block for fixed descendants in Chrome/Safari,
+  // trapping the overlay inside the 64px topbar. Moving to body puts it in root context.
+  function relocateNav() {
+    if (window.innerWidth <= 768) {
+      if (navLinks.parentElement !== document.body) {
+        closeNav();
+        document.body.appendChild(navLinks);
+      }
+    } else {
+      if (navLinks.parentElement !== navContainer) {
+        closeNav();
+        navContainer.appendChild(navLinks);
+      }
+    }
+  }
+
+  relocateNav();
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(relocateNav, 100);
+  });
+
   navToggle.addEventListener('click', () => {
     const expanded = navToggle.getAttribute('aria-expanded') === 'true';
     navToggle.setAttribute('aria-expanded', String(!expanded));
     navLinks.classList.toggle('open');
   });
+
   document.querySelectorAll('.nav-links a').forEach((link) => {
-    link.addEventListener('click', () => {
-      navLinks.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
-    });
+    link.addEventListener('click', closeNav);
   });
 }
 
