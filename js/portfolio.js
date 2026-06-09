@@ -168,7 +168,21 @@ function initSkillsCarousel() {
   }
 
   update();
-  startAuto();
+
+  const skillsSection = document.getElementById('skills');
+  if ('IntersectionObserver' in window && skillsSection) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        startAuto();
+      } else {
+        stopAuto();
+        goTo(0);
+      }
+    }, { threshold: 0.15 });
+    io.observe(skillsSection);
+  } else {
+    startAuto();
+  }
 }
 
 // ── Modal System ─────────────────────────────────────────────────────────────
