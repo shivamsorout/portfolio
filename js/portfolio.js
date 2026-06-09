@@ -221,6 +221,16 @@ function initModals() {
   });
 }
 
+function initHeroButtons() {
+  document.querySelectorAll('.hero-actions a[href^="#"]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(btn.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+}
+
 // ── Bootstrap ─────────────────────────────────────────────────────────────────
 function init() {
   updateYear();
@@ -229,6 +239,7 @@ function init() {
   handleNavToggle();
   initSkillsCarousel();
   initModals();
+  initHeroButtons();
 }
 
 window.addEventListener('DOMContentLoaded', init);

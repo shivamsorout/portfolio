@@ -353,6 +353,7 @@ textarea {
   border-radius: 50%;
   filter: blur(40px);
   opacity: 0.45;
+  pointer-events: none;
 }
 
 .background-blur {
@@ -389,6 +390,7 @@ textarea {
   max-width: 1180px;
   margin: 0 auto;
   padding: 48px 20px;
+  scroll-margin-top: 72px;
 }
 
 .skills-carousel-container {
